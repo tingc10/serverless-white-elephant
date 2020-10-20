@@ -4,8 +4,8 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLNonNull,
-} from "graphql";
-import { APIGatewayProxyHandler } from 'aws-lambda'
+} from 'graphql';
+import { APIGatewayProxyHandler } from 'aws-lambda';
 
 // This method just inserts the user's first name into the greeting message.
 const getGreeting = (firstName) => `Hello, ${firstName}.`;
@@ -13,7 +13,7 @@ const getGreeting = (firstName) => `Hello, ${firstName}.`;
 // Here we declare the schema and resolvers for the query
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
-    name: "RootQueryType", // an arbitrary name
+    name: 'RootQueryType', // an arbitrary name
     fields: {
       // the query has a field called 'greeting'
       greeting: {
@@ -26,7 +26,7 @@ const schema = new GraphQLSchema({
         // the greeting message is a string
         type: GraphQLString,
         // resolve to a greeting message
-        resolve: (parent, args) => getGreeting(args.firstName),
+        resolve: (_, args) => getGreeting(args.firstName),
       },
     },
   }),
@@ -36,8 +36,8 @@ const schema = new GraphQLSchema({
 export const query: APIGatewayProxyHandler = async (event) => {
   try {
     const result = await graphql(schema, event.queryStringParameters.query);
-    return { statusCode: 200, body: JSON.stringify(result) }
+    return { statusCode: 200, body: JSON.stringify(result) };
   } catch (err) {
-    return err
+    return err;
   }
-}
+};
