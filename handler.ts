@@ -1,21 +1,43 @@
-import * as _ from 'lodash'
+import {
+  graphql,
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLNonNull,
+} from "graphql";
+import { APIGatewayProxyHandler } from 'aws-lambda'
+
+// This method just inserts the user's first name into the greeting message.
+const getGreeting = (firstName) => `Hello, ${firstName}.`;
+
+// Here we declare the schema and resolvers for the query
+const schema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "RootQueryType", // an arbitrary name
+    fields: {
+      // the query has a field called 'greeting'
+      greeting: {
+        // we need to know the user's name to greet them
+        args: {
+          firstName: {
+            type: new GraphQLNonNull(GraphQLString),
+          },
+        },
+        // the greeting message is a string
+        type: GraphQLString,
+        // resolve to a greeting message
+        resolve: (parent, args) => getGreeting(args.firstName),
+      },
+    },
+  }),
+});
 
 // modern module syntax
-export async function hello(event, context, callback) {
-
-  // dependencies work as expected
-  console.log(_.VERSION)
-
-  // async/await also works out of the box
-  await new Promise((resolve, reject) => setTimeout(resolve, 500))
-
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
-
-  callback(null, response);
+export const query: APIGatewayProxyHandler = async (event) => {
+  try {
+    const result = await graphql(schema, event.queryStringParameters.query);
+    return { statusCode: 200, body: JSON.stringify(result) }
+  } catch (err) {
+    return err
+  }
 }

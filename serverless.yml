@@ -13,8 +13,8 @@
 
 service: white-elephant
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: white-elephant
+org: tingc10
 
 plugins:
   - serverless-plugin-typescript
@@ -61,8 +61,12 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  query:
+    handler: handler.query
+    events:
+      - http:
+          path: query
+          method: get
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
