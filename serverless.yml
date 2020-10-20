@@ -16,8 +16,18 @@ service: white-elephant
 app: white-elephant
 org: tingc10
 
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  prune:
+    automatic: true
+    number: 3
+
 plugins:
-  - serverless-plugin-typescript
+  - serverless-webpack
+  - serverless-prune-plugin
+  - serverless-offline
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -62,7 +72,7 @@ provider:
 
 functions:
   query:
-    handler: handler.query
+    handler: src/handler.query
     events:
       - http:
           path: query

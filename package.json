@@ -7,10 +7,12 @@
   "author": "Ting Chen <tingshen.chen@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint"
+    "lint": "eslint . --ext .js,.ts,.tsx",
+    "build": "tsc --noEmit",
+    "start:offline": "sls offline",
+    "deploy": "sls deploy"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.64",
     "aws-lambda": "^1.0.6",
     "graphql": "^15.3.0"
   },
@@ -18,6 +20,7 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
+    "@types/aws-lambda": "^8.10.64",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "babel-jest": "^26.6.0",
@@ -26,10 +29,16 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-module-resolver": "^1.0.0",
+    "fork-ts-checker-webpack-plugin": "^5.2.0",
     "jest": "^26.6.0",
-    "serverless-plugin-typescript": "^1.1.9",
+    "serverless-offline": "^6.8.0",
+    "serverless-prune-plugin": "^1.4.3",
+    "serverless-webpack": "^5.3.5",
+    "ts-loader": "^8.0.6",
     "tslint": "^6.1.3",
     "typescript": "^4.0.3",
-    "typescript-eslint": "^0.0.1-alpha.0"
+    "typescript-eslint": "^0.0.1-alpha.0",
+    "webpack": "^5.1.3",
+    "webpack-node-externals": "^2.5.2"
   }
 }
