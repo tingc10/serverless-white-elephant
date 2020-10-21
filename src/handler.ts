@@ -1,41 +1,41 @@
-import {
-  graphql,
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLNonNull,
-} from 'graphql';
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import { ApolloServer, gql, IResolvers } from 'apollo-server-lambda';
 import { getGreeting } from '@queries/getGreeting';
+import * as AWS from 'aws-sdk';
 
-// Here we declare the schema and resolvers for the query
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'RootQueryType', // an arbitrary name
-    fields: {
-      // the query has a field called 'greeting'
-      greeting: {
-        // we need to know the user's name to greet them
-        args: {
-          firstName: {
-            type: new GraphQLNonNull(GraphQLString),
-          },
-        },
-        // the greeting message is a string
-        type: GraphQLString,
-        // resolve to a greeting message
-        resolve: (_, args) => getGreeting(args.firstName),
-      },
-    },
+const typeDefs = gql`
+  type Query {
+    getGreeting(firstName: String!): String
+  }
+
+  type Mutation {
+    changeNickname(firstName: String!, nickname: String!): String
+  }
+
+  type User {
+    id: ID!
+    firstName: String!
+    email: String!
+  }
+`;
+
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const resolvers: IResolvers = {
+  Query: {
+    getGreeting: (),
+  },
+};
+
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ event, context }) => ({
+    headers: event.headers,
+    functionName: context.functionName,
+    event,
+    context,
+    dynamoDb,
   }),
 });
 
-// modern module syntax
-export const query: APIGatewayProxyHandler = async (event) => {
-  try {
-    const result = await graphql(schema, event.queryStringParameters.query);
-    return { statusCode: 200, body: JSON.stringify(result) };
-  } catch (err) {
-    return err;
-  }
-};
+export const graphql = server.createHandler();
