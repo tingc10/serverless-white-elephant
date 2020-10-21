@@ -6,9 +6,7 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { APIGatewayProxyHandler } from 'aws-lambda';
-
-// This method just inserts the user's first name into the greeting message.
-const getGreeting = (firstName) => `Hello, ${firstName}.`;
+import { getGreeting } from '@queries/getGreeting';
 
 // Here we declare the schema and resolvers for the query
 const schema = new GraphQLSchema({
