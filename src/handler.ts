@@ -6,6 +6,9 @@ import {
   buildSchema,
   Field, ID, Mutation, ObjectType, Query, Resolver,
 } from 'type-graphql';
+import {
+  APIGatewayProxyEvent, APIGatewayProxyResult, Callback, Context,
+} from 'aws-lambda';
 
 // const typeDefs = gql`
 //   type Query {
@@ -39,7 +42,7 @@ class User {
   email: string;
 }
 
-@Resolver(User)
+@Resolver()
 class UserResolver {
   private dynamoDb: AWS.DynamoDB.DocumentClient = new AWS.DynamoDB.DocumentClient();
 
@@ -70,9 +73,10 @@ class UserResolver {
   }
 }
 
-export const graphql = async (): Promise<ReturnType<typeof server.createHandler>> => {
+async function bootstrap(evt: APIGatewayProxyEvent, ctxt: Context, callback: Callback<APIGatewayProxyResult>) {
   const schema = await buildSchema({
     resolvers: [UserResolver],
+    orphanedTypes: [User],
   });
 
   const server = new ApolloServer({
@@ -84,5 +88,9 @@ export const graphql = async (): Promise<ReturnType<typeof server.createHandler>
       context,
     }),
   });
-  return server.createHandler();
-};
+  return server.createHandler()(evt, ctxt, callback);
+}
+
+export function graphql(event: APIGatewayProxyEvent, context: Context, callback: Callback<APIGatewayProxyResult>) {
+  bootstrap(event, context, callback);
+}
