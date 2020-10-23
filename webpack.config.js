@@ -8,15 +8,15 @@ module.exports = {
   context: __dirname,
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   entry: slsw.lib.entries,
-  devtool: slsw.lib.webpack.isLocal ? 'eval-cheap-module-source-map' : 'source-map',
+  devtool: slsw.lib.webpack.isLocal
+    ? 'eval-cheap-module-source-map'
+    : 'source-map',
   resolve: {
     extensions: ['.mjs', '.json', '.ts'],
     symlinks: false,
     cacheWithContext: false,
     alias: {
       '@src': path.resolve(__dirname, './src'),
-      '@queries': path.resolve(__dirname, './queries'),
-      '@tests': path.resolve(__dirname, './tests'),
     },
   },
   output: {

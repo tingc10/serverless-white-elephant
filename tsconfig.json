@@ -15,9 +15,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "@src/*": ["src/*"],
-      "@queries/*": ["queries/*"],
-      "@tests/*": ["tests/*"]
+      "@src/*": ["src/*"]
     },
     "module": "ESNext"
   },

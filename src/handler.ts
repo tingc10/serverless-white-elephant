@@ -4,35 +4,23 @@ import * as AWS from 'aws-sdk';
 import {
   Arg,
   buildSchema,
-  Field, ID, Mutation, ObjectType, Query, Resolver,
+  Field,
+  ID,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
 } from 'type-graphql';
 import {
-  APIGatewayProxyEvent, APIGatewayProxyResult, Callback, Context,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Callback,
+  Context,
 } from 'aws-lambda';
 
-// const typeDefs = gql`
-//   type Query {
-//     getGreeting(firstName: String!): String
-//   }
-
-//   type Mutation {
-//     changeNickname(firstName: String!, nickname: String!): String
-//   }
-
-//   type User {
-//     id: ID!
-//     firstName: String!
-//     email: String!
-//   }
-// `;
-// const resolvers: IResolvers = {
-//   Query: {
-//     getGreeting: (),
-//   },
-// };
 @ObjectType()
 class User {
-  @Field(_type => ID)
+  @Field((_type) => ID)
   id: string;
 
   @Field()
@@ -46,34 +34,42 @@ class User {
 class UserResolver {
   private dynamoDb: AWS.DynamoDB.DocumentClient = new AWS.DynamoDB.DocumentClient();
 
-  @Query(_returns => String)
+  @Query((_returns) => String)
   async getGreeting(@Arg('firstName') firstName: string) {
-    const result = await this.dynamoDb.get({
-      TableName: process.env.DYNAMODB_TABLE,
-      Key: { firstName },
-    }).promise();
+    const result = await this.dynamoDb
+      .get({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: { firstName },
+      })
+      .promise();
     const name = result.Item.nickname ?? result.Item;
     return `Hello, ${name}`;
   }
 
-  @Mutation(_returns => String)
+  @Mutation((_returns) => String)
   async changeNickname(
     @Arg('firstName') firstName: string,
     @Arg('nickname', { nullable: true }) nickname: string,
   ) {
-    await this.dynamoDb.update({
-      TableName: process.env.DYNAMODB_TABLE,
-      Key: { firstName },
-      UpdateExpression: 'SET nickname = :nickname',
-      ExpressionAttributeValues: {
-        ':nickname': nickname,
-      },
-    }).promise();
+    await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: { firstName },
+        UpdateExpression: 'SET nickname = :nickname',
+        ExpressionAttributeValues: {
+          ':nickname': nickname,
+        },
+      })
+      .promise();
     return nickname;
   }
 }
 
-async function bootstrap(evt: APIGatewayProxyEvent, ctxt: Context, callback: Callback<APIGatewayProxyResult>) {
+async function bootstrap(
+  evt: APIGatewayProxyEvent,
+  ctxt: Context,
+  callback: Callback<APIGatewayProxyResult>,
+) {
   const schema = await buildSchema({
     resolvers: [UserResolver],
     orphanedTypes: [User],
@@ -88,9 +84,13 @@ async function bootstrap(evt: APIGatewayProxyEvent, ctxt: Context, callback: Cal
       context,
     }),
   });
-  return server.createHandler()(evt, ctxt, callback);
+  server.createHandler()(evt, ctxt, callback);
 }
 
-export function graphql(event: APIGatewayProxyEvent, context: Context, callback: Callback<APIGatewayProxyResult>) {
+export function graphql(
+  event: APIGatewayProxyEvent,
+  context: Context,
+  callback: Callback<APIGatewayProxyResult>,
+): void {
   bootstrap(event, context, callback);
 }

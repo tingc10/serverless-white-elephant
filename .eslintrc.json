@@ -9,7 +9,8 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -20,26 +21,12 @@
   "root": true,
   "globals": {},
   "rules": {
-    "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
     "import/prefer-default-export": "off",
     "arrow-parens": "off",
     "max-classes-per-file": "off",
-    "max-len": [
-      "error",
-      {
-        "code": 100,
-        "ignoreComments": true,
-        "ignoreTrailingComments": true,
-        "ignoreUrls": true,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true
-      }
-    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -54,9 +41,7 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@src", "./src"],
-          ["@tests", "./tests"],
-          ["@queries", "./queries"]
+          ["@src", "./src"]
         ],
         "extensions": [".ts", ".js"]
       }
