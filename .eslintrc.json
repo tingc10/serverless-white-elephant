@@ -24,12 +24,15 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
     "import/prefer-default-export": "off",
+    "arrow-parens": "off",
+    "max-classes-per-file": "off",
     "max-len": [
       "error",
       {
-        "code": 150,
+        "code": 100,
         "ignoreComments": true,
         "ignoreTrailingComments": true,
         "ignoreUrls": true,
