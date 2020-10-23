@@ -1,4 +1,5 @@
 import { ApolloServer, gql, IResolvers } from 'apollo-server-lambda';
+import 'reflect-metadata'
 import { getGreeting } from '@queries/getGreeting';
 import * as AWS from 'aws-sdk';
 
@@ -19,11 +20,11 @@ const typeDefs = gql`
 `;
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-const resolvers: IResolvers = {
-  Query: {
-    getGreeting: (),
-  },
-};
+// const resolvers: IResolvers = {
+//   Query: {
+//     getGreeting: (),
+//   },
+// };
 
 
 const server = new ApolloServer({

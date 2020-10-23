@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": ["es2018", "esnext.asynciterable"],
     "removeComments": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -12,6 +12,8 @@
     "esModuleInterop": true,
     "sourceRoot": "/",
     "baseUrl": "./",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "paths": {
       "@src/*": ["src/*"],
       "@queries/*": ["queries/*"],
