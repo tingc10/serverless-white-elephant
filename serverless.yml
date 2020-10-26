@@ -49,19 +49,22 @@ provider:
 # you can add CloudFormation resource templates here
 resources:
   Resources:
-    NicknamesTable:
+    UsersTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        # Defines attribute types
         AttributeDefinitions:
           - AttributeName: firstName
+            # Type String
             AttributeType: S
+        # Defines the primary key
         KeySchema:
           - AttributeName: firstName
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
 
 # you can define service wide environment variables here
 #  environment:
