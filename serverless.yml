@@ -49,19 +49,27 @@ provider:
 # you can add CloudFormation resource templates here
 resources:
   Resources:
-    UsersTable:
+    UserTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
-        # Defines attribute types
+        # Defines names for keys
         AttributeDefinitions:
-          - AttributeName: firstName
+          - AttributeName: pk
             # Type String
             AttributeType: S
-        # Defines the primary key
+        AttributeDefinitions:
+          - AttributeName: sk
+            # Type String
+            AttributeType: S
+        # Defines the roles of keys
         KeySchema:
-          - AttributeName: firstName
+          # KeyType HASH defines partition key
+          - AttributeName: pk
             KeyType: HASH
+          # KeyType RANGE defines sort key
+          - AttributeName: sk
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
