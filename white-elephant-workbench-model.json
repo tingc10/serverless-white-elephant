@@ -1,0 +1,163 @@
+{
+  "ModelName": "White Elephant Single Table",
+  "ModelMetadata": {
+    "Author": "",
+    "DateCreated": "Oct 27, 2020, 12:47 AM",
+    "DateLastModified": "Oct 27, 2020, 01:47 AM",
+    "Description": "",
+    "Version": "1.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "Primary",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "pk",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "sk",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "game_options",
+          "AttributeType": "SS"
+        },
+        {
+          "AttributeName": "turn_tokens",
+          "AttributeType": "SS"
+        },
+        {
+          "AttributeName": "turn_index",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "nickname",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "address",
+          "AttributeType": "M"
+        },
+        {
+          "AttributeName": "user_stolen_from",
+          "AttributeType": "SS"
+        },
+        {
+          "AttributeName": "product_url",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_name",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_image_url",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_description",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_stolen_from",
+          "AttributeType": "SS"
+        },
+        {
+          "AttributeName": "user_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "room_code",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "gift_revealed",
+          "AttributeType": "BOOL"
+        },
+        {
+          "AttributeName": "turn_token",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "recipient_id",
+          "AttributeType": "S"
+        }
+      ],
+      "TableFacets": [
+        {
+          "FacetName": "Rooms",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "RoomCode",
+            "SortKeyAlias": "meta#RoomCode"
+          },
+          "TableData": [],
+          "NonKeyAttributes": [
+            "game_options",
+            "turn_tokens",
+            "room_code",
+            "turn_index"
+          ]
+        },
+        {
+          "FacetName": "Users",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "UserID",
+            "SortKeyAlias": "meta#UserID"
+          },
+          "TableData": [],
+          "NonKeyAttributes": [
+            "nickname",
+            "address",
+            "user_id"
+          ]
+        },
+        {
+          "FacetName": "UserGifts",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "UserID",
+            "SortKeyAlias": "RoomCode"
+          },
+          "TableData": [],
+          "NonKeyAttributes": [
+            "product_url",
+            "gift_name",
+            "gift_image_url",
+            "gift_description",
+            "user_id",
+            "gift_id",
+            "room_code",
+            "gift_stolen_from",
+            "recipient_id"
+          ]
+        },
+        {
+          "FacetName": "RoomUsers",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "RoomCode",
+            "SortKeyAlias": "GiftID"
+          },
+          "TableData": [],
+          "NonKeyAttributes": [
+            "nickname",
+            "user_id",
+            "gift_id",
+            "room_code",
+            "gift_revealed",
+            "turn_token",
+            "user_stolen_from"
+          ]
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      }
+    }
+  ]
+}
