@@ -16,3 +16,10 @@ Serverless backend to power white elephant gift exchange
 - [x] Figure out DynamoDB structure
 - [ ] Implement game mechanics
 - [ ] Setup Auth0
+
+## Features
+- [ ] Can create user with nickname
+- [ ] Host can create room with name. Room generates with a room code
+- [ ] Host can start game -> generates turn tokens and sets turn index
+- [ ] User can input gift with gift name, url, description, image url
+- [ ] User should be able to fetch all gifts in the room and identify the one they submitted

@@ -38,6 +38,7 @@ provider:
   runtime: nodejs12.x
   environment:
     DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
+    STAGE_ENV: ${self:provider.stage}
   # you can add statements to the Lambda function's IAM Role here
   iamRoleStatements:
     - Effect: Allow
@@ -49,7 +50,7 @@ provider:
 # you can add CloudFormation resource templates here
 resources:
   Resources:
-    UserTable:
+    WhiteElephant:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
@@ -58,7 +59,6 @@ resources:
           - AttributeName: pk
             # Type String
             AttributeType: S
-        AttributeDefinitions:
           - AttributeName: sk
             # Type String
             AttributeType: S

@@ -1,37 +1,55 @@
+import { User } from '@src/object-types';
+import { awsClient } from '@src/utils/aws-client';
 import * as AWS from 'aws-sdk';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 
 @Resolver()
 export class UserResolver {
-  private dynamoDb: AWS.DynamoDB.DocumentClient = new AWS.DynamoDB.DocumentClient();
+  private dynamoDb: AWS.DynamoDB.DocumentClient = awsClient;
 
-  @Query((_returns) => String)
-  async getGreeting(@Arg('firstName') firstName: string): Promise<string> {
+  @Query((_returns) => User)
+  async getUser(@Arg('firstName') id: string): Promise<User> {
     const result = await this.dynamoDb
       .get({
         TableName: process.env.DYNAMODB_TABLE,
-        Key: { firstName },
+        Key: { pk: `UserId-${id}` },
       })
       .promise();
-    const name = result.Item.nickname ?? result.Item;
-    return `Hello, ${name}`;
+    return {
+      id: result.Item.userId,
+      nickname: result.Item.nickname,
+    };
   }
 
+  // @Mutation((_returns) => String)
+  // async changeNickname(
+  //   @Arg('id') id: string,
+  //   @Arg('nickname', { nullable: true }) nickname: string,
+  // ): Promise<string> {
+  //   await this.dynamoDb
+  //     .update({
+  //       TableName: process.env.DYNAMODB_TABLE,
+  //       Key: { pk: `UserId-${id}`, sk: `UserMeta-${id}` },
+  //       UpdateExpression: 'SET nickname = :nickname',
+  //       ExpressionAttributeValues: {
+  //         ':nickname': nickname,
+  //       },
+  //     })
+  //     .promise();
+  //   return nickname;
+  // }
+
   @Mutation((_returns) => String)
-  async changeNickname(
-    @Arg('firstName') firstName: string,
-    @Arg('nickname', { nullable: true }) nickname: string,
-  ): Promise<string> {
+  async addUser(@Arg('id') id: string): Promise<string> {
     await this.dynamoDb
-      .update({
+      .put({
         TableName: process.env.DYNAMODB_TABLE,
-        Key: { firstName },
-        UpdateExpression: 'SET nickname = :nickname',
-        ExpressionAttributeValues: {
-          ':nickname': nickname,
+        Item: {
+          pk: `UserId-${id}`,
+          sk: `UserMeta-${id}`,
         },
       })
       .promise();
-    return nickname;
+    return id;
   }
 }

@@ -11,7 +11,9 @@
     "format": "yarn lint --fix",
     "build": "tsc --noEmit",
     "start:offline": "sls offline",
-    "deploy": "sls deploy"
+    "deploy": "sls deploy",
+    "dynamodb:start": "docker run -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -inMemory -sharedDb",
+    "dynamodb:seed": "node ./tests/seed-local-dynamodb.js"
   },
   "dependencies": {
     "apollo-server-lambda": "^2.18.2",
