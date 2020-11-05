@@ -9,6 +9,7 @@ Serverless backend to power white elephant gift exchange
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html
 - https://serverlessfirst.com/dynamodb-modelling-single-vs-multi-table/
 - https://www.jeremydaly.com/how-to-switch-from-rdbms-to-dynamodb-in-20-easy-steps/
+- https://medium.com/quick-code/node-js-restful-api-with-dynamodb-local-7e342a934a24
 
 ## TODO
 - [x] Setup serverless with webpack

@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
+import { Address } from './Address';
 
 @ObjectType()
 export class User {
@@ -7,4 +8,7 @@ export class User {
 
   @Field()
   nickname: string;
+
+  @Field((_type) => Address)
+  address: Address;
 }

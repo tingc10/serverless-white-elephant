@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.ts,.tsx",
     "format": "yarn lint --fix",
     "build": "tsc --noEmit",
-    "start:offline": "sls offline",
+    "start:offline": "NODE_OPTIONS=--max_old_space_size=8192 sls offline",
     "deploy": "sls deploy",
     "dynamodb:start": "docker run -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -inMemory -sharedDb",
     "dynamodb:seed": "node ./tests/seed-local-dynamodb.js"
