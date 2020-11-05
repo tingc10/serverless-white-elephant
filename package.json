@@ -21,6 +21,7 @@
     "aws-sdk": "^2.775.0",
     "class-validator": "^0.12.2",
     "graphql": "^15.3.0",
+    "nanoid": "^3.1.16",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.0"
   },

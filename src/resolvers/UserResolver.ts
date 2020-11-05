@@ -1,7 +1,6 @@
 import { AddressInput } from '@src/inputs-types/AddressInput';
 import { User } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
-import * as AWS from 'aws-sdk';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 
 @Resolver()
@@ -64,18 +63,17 @@ export class UserResolver {
     return result.Attributes as User;
   }
 
-  @Mutation((_returns) => User)
-  async addUser(@Arg('id') id: string): Promise<User> {
-    const result = await this.dynamoDb
+  @Mutation((_returns) => String)
+  async addUser(@Arg('id') id: string): Promise<string> {
+    await this.dynamoDb
       .put({
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
           pk: `UserId-${id}`,
           sk: `UserMeta-${id}`,
         },
-        ReturnValues: 'ALL_NEW',
       })
       .promise();
-    return result.Attributes as User;
+    return id;
   }
 }
