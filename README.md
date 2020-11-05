@@ -26,6 +26,6 @@ Serverless backend to power white elephant gift exchange
 - [x] Can create user
 - [x] Can update user 
 - [x] Host can create room with name. Room generates with a room code
-- [ ] Host can start game -> generates turn tokens and sets turn index
 - [ ] User can input gift with gift name, url, description, image url
+- [ ] Host can start game -> generates turn tokens and sets turn index
 - [ ] User should be able to fetch all gifts in the room and identify the one they submitted

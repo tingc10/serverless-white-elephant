@@ -28,6 +28,12 @@ export class RoomResolver {
           roomName,
           roomCode,
         },
+        // Prevents overriding an existing record
+        ConditionExpression: 'pk <> :pk AND sk <> :sk',
+        ExpressionAttributeValues: {
+          ':pk': `RoomCode-${roomCode}`,
+          ':sk': `RoomMeta-${roomCode}`,
+        },
       })
       .promise();
     await this.dynamoDb
