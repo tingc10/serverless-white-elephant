@@ -23,7 +23,8 @@
     "graphql": "^15.3.0",
     "nanoid": "^3.1.16",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.1.0"
+    "type-graphql": "^1.1.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

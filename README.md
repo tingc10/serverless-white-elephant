@@ -12,6 +12,7 @@ Serverless backend to power white elephant gift exchange
 - https://medium.com/quick-code/node-js-restful-api-with-dynamodb-local-7e342a934a24
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.03.html
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
+- https://www.serverless.com/learn/courses/serverless-for-frontend-developers/
 
 ## TODO
 - [x] Setup serverless with webpack
@@ -27,5 +28,6 @@ Serverless backend to power white elephant gift exchange
 - [x] Can update user 
 - [x] Host can create room with name. Room generates with a room code
 - [ ] User can input gift with gift name, url, description, image url
+- [ ] User can fetch all users and gifts in a room
 - [ ] Host can start game -> generates turn tokens and sets turn index
 - [ ] User should be able to fetch all gifts in the room and identify the one they submitted

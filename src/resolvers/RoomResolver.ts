@@ -2,6 +2,7 @@ import { Room } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { customAlphabet } from 'nanoid';
+import { getRoomKeys, getRoomUsersKeys } from '@src/utils/facet-keys';
 
 @Resolver()
 export class RoomResolver {
@@ -22,27 +23,23 @@ export class RoomResolver {
       .put({
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
-          pk: `RoomCode-${roomCode}`,
-          sk: `RoomMeta-${roomCode}`,
+          ...getRoomKeys(roomCode),
           gameOptions,
           roomName,
           roomCode,
         },
         // Prevents overriding an existing record
         ConditionExpression: 'pk <> :pk AND sk <> :sk',
-        ExpressionAttributeValues: {
-          ':pk': `RoomCode-${roomCode}`,
-          ':sk': `RoomMeta-${roomCode}`,
-        },
+        ExpressionAttributeValues: getRoomKeys(roomCode, true),
       })
       .promise();
     await this.dynamoDb
       .put({
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
-          pk: `UserId-${hostId}`,
-          sk: `RoomMeta-${roomCode}`,
-          roomCode,
+          ...getRoomUsersKeys(roomCode, hostId),
+          userId: hostId,
+          isHost: true,
         },
       })
       .promise();

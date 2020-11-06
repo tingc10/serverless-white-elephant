@@ -8,7 +8,7 @@ import {
   Context,
 } from 'aws-lambda';
 // import { User } from './object-types';
-import { RoomResolver, UserResolver } from './resolvers';
+import { GiftResolver, RoomResolver, UserResolver } from './resolvers';
 
 async function bootstrap(
   evt: APIGatewayProxyEvent,
@@ -16,7 +16,7 @@ async function bootstrap(
   callback: Callback<APIGatewayProxyResult>,
 ) {
   const schema = await buildSchema({
-    resolvers: [UserResolver, RoomResolver],
+    resolvers: [UserResolver, RoomResolver, GiftResolver],
     // orphanedTypes: [User],
   });
 

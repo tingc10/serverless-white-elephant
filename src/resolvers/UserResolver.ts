@@ -1,6 +1,7 @@
 import { AddressInput } from '@src/inputs-types/AddressInput';
 import { User } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
+import { getUserKeys } from '@src/utils/facet-keys';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 
 @Resolver()
@@ -12,7 +13,7 @@ export class UserResolver {
     const result = await this.dynamoDb
       .get({
         TableName: process.env.DYNAMODB_TABLE,
-        Key: { pk: `UserId-${id}`, sk: `UserMeta-${id}` },
+        Key: getUserKeys(id),
       })
       .promise();
     return result.Item as User;
@@ -26,7 +27,7 @@ export class UserResolver {
     const result = await this.dynamoDb
       .update({
         TableName: process.env.DYNAMODB_TABLE,
-        Key: { pk: `UserId-${id}`, sk: `UserMeta-${id}` },
+        Key: getUserKeys(id),
         UpdateExpression: 'set nickname = :nickname',
         ExpressionAttributeValues: {
           ':nickname': nickname,
@@ -46,7 +47,7 @@ export class UserResolver {
     const result = await this.dynamoDb
       .update({
         TableName: process.env.DYNAMODB_TABLE,
-        Key: { pk: `UserId-${id}`, sk: `UserMeta-${id}` },
+        Key: getUserKeys(id),
         UpdateExpression: 'SET address = :address',
         ExpressionAttributeValues: {
           ':address': {
@@ -68,10 +69,7 @@ export class UserResolver {
     await this.dynamoDb
       .put({
         TableName: process.env.DYNAMODB_TABLE,
-        Item: {
-          pk: `UserId-${id}`,
-          sk: `UserMeta-${id}`,
-        },
+        Item: getUserKeys(id),
       })
       .promise();
     return id;
