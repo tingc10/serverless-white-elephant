@@ -1,6 +1,6 @@
-import { Room } from '@src/object-types';
+import { Gift, Room, User } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
-import { Arg, Mutation, Resolver } from 'type-graphql';
+import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { customAlphabet } from 'nanoid';
 import { getRoomKeys, getRoomUsersKeys } from '@src/utils/facet-keys';
 
@@ -50,5 +50,37 @@ export class RoomResolver {
     };
   }
 
-  // TODO: Remove host relationship
+  @Query((_returns) => [Gift])
+  async getRoomGifts(
+    @Arg('roomCode') roomCode: string,
+  ): Promise<Partial<Gift>[]> {
+    const result = await this.dynamoDb
+      .query({
+        TableName: process.env.DYNAMODB_TABLE,
+        KeyConditionExpression: 'pk = :roomcode and begins_with(sk, :prefix)',
+        ExpressionAttributeValues: {
+          ':roomcode': `RoomCode-${roomCode}`,
+          ':prefix': 'GiftId-',
+        },
+      })
+      .promise();
+    return result.Items;
+  }
+
+  @Query((_returns) => [User])
+  async getRoomUsers(
+    @Arg('roomCode') roomCode: string,
+  ): Promise<Partial<User>[]> {
+    const result = await this.dynamoDb
+      .query({
+        TableName: process.env.DYNAMODB_TABLE,
+        KeyConditionExpression: 'pk = :roomcode and begins_with(sk, :prefix)',
+        ExpressionAttributeValues: {
+          ':roomcode': `RoomCode-${roomCode}`,
+          ':prefix': 'UserId-',
+        },
+      })
+      .promise();
+    return result.Items;
+  }
 }

@@ -13,6 +13,7 @@ Serverless backend to power white elephant gift exchange
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.03.html
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
 - https://www.serverless.com/learn/courses/serverless-for-frontend-developers/
+- https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html
 
 ## TODO
 - [x] Setup serverless with webpack
@@ -21,13 +22,13 @@ Serverless backend to power white elephant gift exchange
 - [ ] Implement game mechanics
 - [ ] Setup Auth0
 - [ ] Use [ProjectionExpression](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html) to limit the return values from DynamoDB
-- [ ] Use [Global Secondary Indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Projections) to create indexes
+- [ ] Use [Global Secondary Indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) to create indexes
 
 ## Features
 - [x] Can create user
 - [x] Can update user 
 - [x] Host can create room with name. Room generates with a room code
-- [ ] User can input gift with gift name, url, description, image url
+- [x] User can input gift with gift name, url, description, image url
 - [ ] User can fetch all users and gifts in a room
 - [ ] Host can start game -> generates turn tokens and sets turn index
 - [ ] User should be able to fetch all gifts in the room and identify the one they submitted

@@ -4,7 +4,7 @@ import { Address } from './Address';
 @ObjectType()
 export class User {
   @Field((_type) => ID)
-  id: string;
+  userId: string;
 
   @Field()
   nickname: string;
