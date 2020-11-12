@@ -63,6 +63,10 @@ resources:
           - AttributeName: sk
             # Type String
             AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: roomCode
+            AttributeType: S
         # Defines the roles of keys
         KeySchema:
           # KeyType HASH defines partition key

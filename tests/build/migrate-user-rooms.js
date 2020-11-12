@@ -9,8 +9,8 @@ var dynamodb = new AWS.DynamoDB(serviceConfigOptions);
 var params = {
     TableName: 'white-elephant-dev',
     AttributeDefinitions: [
-        { AttributeName: 'pk', AttributeType: 'S' },
-        { AttributeName: 'sk', AttributeType: 'S' },
+        { AttributeName: 'userId', AttributeType: 'S' },
+        { AttributeName: 'roomCode', AttributeType: 'S' },
     ],
     GlobalSecondaryIndexUpdates: [
         {
@@ -20,8 +20,8 @@ var params = {
                     ProjectionType: 'KEYS_ONLY'
                 },
                 KeySchema: [
-                    { AttributeName: 'pk', KeyType: 'HASH' },
-                    { AttributeName: 'sk', KeyType: 'RANGE' },
+                    { AttributeName: 'userId', KeyType: 'HASH' },
+                    { AttributeName: 'roomCode', KeyType: 'RANGE' },
                 ],
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,

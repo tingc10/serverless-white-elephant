@@ -11,8 +11,8 @@ const dynamodb = new AWS.DynamoDB(serviceConfigOptions);
 const params: UpdateTableInput = {
   TableName: 'white-elephant-dev',
   AttributeDefinitions: [
-    { AttributeName: 'pk', AttributeType: 'S' },
-    { AttributeName: 'sk', AttributeType: 'S' },
+    { AttributeName: 'userId', AttributeType: 'S' },
+    { AttributeName: 'roomCode', AttributeType: 'S' },
   ],
   GlobalSecondaryIndexUpdates: [
     {
@@ -22,8 +22,8 @@ const params: UpdateTableInput = {
           ProjectionType: 'KEYS_ONLY',
         },
         KeySchema: [
-          { AttributeName: 'pk', KeyType: 'HASH' },
-          { AttributeName: 'sk', KeyType: 'RANGE' },
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'roomCode', KeyType: 'RANGE' },
         ],
         ProvisionedThroughput: {
           ReadCapacityUnits: 1,
