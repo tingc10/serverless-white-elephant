@@ -25,12 +25,10 @@ export class UserResolver {
       .query({
         TableName: process.env.DYNAMODB_TABLE,
         IndexName: process.env.USER_ROOMS_GSI,
-        KeyConditionExpression:
-          'userId = :userId and begins_with(roomCode, :prefix)',
-        ProjectionExpression: 'roomCode',
+        KeyConditionExpression: 'userId = :userId',
+        ProjectionExpression: 'roomCode, pk',
         ExpressionAttributeValues: {
           ':userId': userId,
-          ':prefix': 'RoomCode-',
         },
       })
       .promise();

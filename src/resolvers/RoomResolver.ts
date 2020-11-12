@@ -39,6 +39,7 @@ export class RoomResolver {
         Item: {
           ...getRoomUsersKeys(roomCode, hostId),
           userId: hostId,
+          roomCode,
           isHost: true,
         },
       })
