@@ -38,6 +38,7 @@ provider:
   runtime: nodejs12.x
   environment:
     DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
+    USER_ROOMS_GSI: UserRooms
     STAGE_ENV: ${self:provider.stage}
   # you can add statements to the Lambda function's IAM Role here
   iamRoleStatements:
@@ -73,6 +74,18 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_ROOMS_GSI}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: roomCode
+                KeyType: RANGE
+            Projection:
+              ProjectionType: KEYS_ONLY
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 # you can define service wide environment variables here
 #  environment:

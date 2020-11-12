@@ -1,5 +1,5 @@
 import { AddressInput } from '@src/inputs-types/AddressInput';
-import { User } from '@src/object-types';
+import { Room, User } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
 import { getUserKeys } from '@src/utils/facet-keys';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
@@ -17,6 +17,24 @@ export class UserResolver {
       })
       .promise();
     return result.Item as User;
+  }
+
+  @Query((_returns) => [Room])
+  async getUserRooms(@Arg('userId') userId: string): Promise<Partial<Room>[]> {
+    const result = await this.dynamoDb
+      .query({
+        TableName: process.env.DYNAMODB_TABLE,
+        IndexName: process.env.USER_ROOMS_GSI,
+        KeyConditionExpression:
+          'userId = :userId and begins_with(roomCode, :prefix)',
+        ProjectionExpression: 'roomCode',
+        ExpressionAttributeValues: {
+          ':userId': userId,
+          ':prefix': 'RoomCode-',
+        },
+      })
+      .promise();
+    return result.Items;
   }
 
   @Mutation((_returns) => User)

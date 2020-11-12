@@ -14,6 +14,7 @@ Serverless backend to power white elephant gift exchange
 - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
 - https://www.serverless.com/learn/courses/serverless-for-frontend-developers/
 - https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-gsi.html
 
 ## TODO
 - [x] Setup serverless with webpack
@@ -32,3 +33,4 @@ Serverless backend to power white elephant gift exchange
 - [ ] User can fetch all users and gifts in a room
 - [ ] Host can start game -> generates turn tokens and sets turn index
 - [ ] User should be able to fetch all gifts in the room and identify the one they submitted
+- [ ] Authenticate users that call mutations

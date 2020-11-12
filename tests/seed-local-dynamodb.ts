@@ -1,4 +1,5 @@
-const AWS = require('aws-sdk');
+import * as AWS from 'aws-sdk';
+import { CreateTableInput } from 'aws-sdk/clients/dynamodb';
 
 const serviceConfigOptions = {
   region: 'us-east-2',
@@ -7,7 +8,7 @@ const serviceConfigOptions = {
 
 const dynamodb = new AWS.DynamoDB(serviceConfigOptions);
 
-const params = {
+const params: CreateTableInput = {
   TableName: 'white-elephant-dev',
   KeySchema: [
     { AttributeName: 'pk', KeyType: 'HASH' },
