@@ -12,8 +12,11 @@ export class Room {
   gameOptions: string[];
 
   @Field((_type) => [String], { nullable: true })
-  turnTokens: string[];
+  unselectedTokens: string[];
 
   @Field({ nullable: true })
   turnIndex: number;
+
+  // Should not be queryable
+  tokenOrders: string[];
 }

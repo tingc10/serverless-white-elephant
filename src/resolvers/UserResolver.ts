@@ -9,14 +9,14 @@ export class UserResolver {
   private dynamoDb: AWS.DynamoDB.DocumentClient = awsClient;
 
   @Query((_returns) => User)
-  async getUser(@Arg('id') id: string): Promise<User> {
+  async getUser(@Arg('id') id: string): Promise<Partial<User>> {
     const result = await this.dynamoDb
       .get({
         TableName: process.env.DYNAMODB_TABLE,
         Key: getUserKeys(id),
       })
       .promise();
-    return result.Item as User;
+    return result.Item;
   }
 
   @Query((_returns) => [Room])
@@ -39,7 +39,7 @@ export class UserResolver {
   async updateNickname(
     @Arg('id') id: string,
     @Arg('nickname', { nullable: true }) nickname: string,
-  ): Promise<User> {
+  ): Promise<Partial<User>> {
     const result = await this.dynamoDb
       .update({
         TableName: process.env.DYNAMODB_TABLE,
@@ -51,7 +51,7 @@ export class UserResolver {
         ReturnValues: 'ALL_NEW',
       })
       .promise();
-    return result.Attributes as User;
+    return result.Attributes;
   }
 
   @Mutation((_returns) => User)
@@ -59,7 +59,7 @@ export class UserResolver {
     @Arg('id') id: string,
     @Arg('address')
     { addressLine1, addressLine2, zipCode, state, city }: AddressInput,
-  ): Promise<User> {
+  ): Promise<Partial<User>> {
     const result = await this.dynamoDb
       .update({
         TableName: process.env.DYNAMODB_TABLE,
@@ -77,7 +77,7 @@ export class UserResolver {
         ReturnValues: 'ALL_NEW',
       })
       .promise();
-    return result.Attributes as User;
+    return result.Attributes;
   }
 
   @Mutation((_returns) => String)
