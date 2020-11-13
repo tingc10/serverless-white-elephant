@@ -45,6 +45,7 @@ export class RoomResolver {
           gameOptions,
           roomName,
           roomCode,
+          totalParticipants: 0,
         },
         // Prevents overriding an existing record
         ConditionExpression: 'pk <> :pk AND sk <> :sk',
@@ -176,9 +177,8 @@ export class RoomResolver {
 
   @Mutation((_returns) => Room)
   async startGame(@Arg('roomCode') roomCode: string): Promise<Partial<Room>> {
-    const roomUsers = await this.getRoomUsers(roomCode);
-    const userCount = roomUsers.length;
-    if (!userCount) {
+    const room = await this.getRoomMeta(roomCode);
+    if (room.totalParticipants < 1) {
       throw new Error('Need more users to start game!');
     }
     const randomToken = customAlphabet(
@@ -186,7 +186,7 @@ export class RoomResolver {
       4,
     );
     const tokenOrders = [];
-    for (let i = 0; i < userCount; i += 1) {
+    for (let i = 0; i < room.totalParticipants; i += 1) {
       tokenOrders.push(randomToken());
     }
     const unselectedTokens = shuffle(tokenOrders);

@@ -1,6 +1,10 @@
 import { Gift } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
-import { getRoomGiftsKeys, getRoomUsersKeys } from '@src/utils/facet-keys';
+import {
+  getRoomGiftsKeys,
+  getRoomKeys,
+  getRoomUsersKeys,
+} from '@src/utils/facet-keys';
 import { Arg, Field, InputType, Mutation, Resolver } from 'type-graphql';
 import { v4 as uuid } from 'uuid';
 
@@ -64,6 +68,51 @@ export class GiftResolver {
         },
       })
       .promise();
+    await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomKeys(roomCode),
+        UpdateExpression: 'set totalParticipants + :i',
+        ExpressionAttributeValues: {
+          ':i': '1',
+        },
+      })
+      .promise();
     return gift;
+  }
+
+  @Mutation((_returns) => Gift)
+  async takeGiftFromUnrevealed(
+    giftId: string,
+    userId: string,
+    roomCode: string,
+  ): Promise<Partial<Gift>> {
+    const result = await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomGiftsKeys(roomCode, giftId),
+        UpdateExpression:
+          'set isRevealed = :isRevealed, recipientId = :recipientId',
+        ConditionExpression:
+          'isRevealed <> :isRevealed and attribute_not_exists(recipientId)',
+        ExpressionAttributeValues: {
+          ':isRevealed': true,
+          ':recipientId': userId,
+        },
+        ReturnValues: 'ALL_NEW',
+      })
+      .promise();
+    await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomKeys(roomCode),
+        UpdateExpression: 'set turnIndex + :i',
+        ConditionExpression: 'turnIndex < totalParticipants',
+        ExpressionAttributeValues: {
+          ':i': '1',
+        },
+      })
+      .promise();
+    return result.Attributes;
   }
 }
