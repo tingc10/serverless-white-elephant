@@ -28,4 +28,7 @@ export class Gift {
 
   @Field({ nullable: true })
   recipientId: string;
+
+  @Field()
+  isRevealed: boolean;
 }

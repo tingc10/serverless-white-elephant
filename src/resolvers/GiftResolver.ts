@@ -45,12 +45,13 @@ export class GiftResolver {
         TableName: process.env.DYNAMODB_TABLE,
         Key: getRoomUsersKeys(roomCode, ownerId),
         UpdateExpression:
-          'set roomCode = :roomCode, userId = :userId, giftId = :giftId',
+          'set roomCode = :roomCode, userId = :userId, giftId = :giftId, isRevealed = :isRevealed',
         ConditionExpression: 'attribute_not_exists(giftId)',
         ExpressionAttributeValues: {
           ':roomCode': roomCode,
           ':userId': ownerId,
           ':giftId': giftId,
+          ':isRevealed': false,
         },
       })
       .promise();

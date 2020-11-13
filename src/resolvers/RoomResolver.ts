@@ -2,8 +2,25 @@ import { Gift, Room, User } from '@src/object-types';
 import { awsClient } from '@src/utils/aws-client';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { customAlphabet } from 'nanoid';
-import { getRoomKeys, getRoomUsersKeys } from '@src/utils/facet-keys';
+import {
+  getRoomGiftsKeys,
+  getRoomKeys,
+  getRoomUsersKeys,
+} from '@src/utils/facet-keys';
 import { shuffle } from '@src/utils/shuffle';
+
+const filterGift = (gift: Gift): Partial<Gift> => {
+  if (!gift.isRevealed) {
+    return {
+      giftId: gift.giftId,
+      stolenFrom: gift.stolenFrom,
+      roomCode: gift.roomCode,
+      recipientId: gift.recipientId,
+      isRevealed: gift.isRevealed,
+    };
+  }
+  return gift;
+};
 
 @Resolver()
 export class RoomResolver {
@@ -77,7 +94,23 @@ export class RoomResolver {
         },
       })
       .promise();
-    return result.Items;
+    const filteredGifts = result.Items.map(filterGift);
+    return filteredGifts;
+  }
+
+  @Query((_returns) => Gift)
+  async getRoomGift(
+    @Arg('roomCode') roomCode: string,
+    @Arg('giftId') giftId: string,
+  ): Promise<Partial<Gift>> {
+    const result = await this.dynamoDb
+      .get({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomGiftsKeys(roomCode, giftId),
+      })
+      .promise();
+    const filteredGift = filterGift(result.Item as Gift);
+    return filteredGift;
   }
 
   @Query((_returns) => [User])
