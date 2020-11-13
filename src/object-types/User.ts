@@ -12,3 +12,21 @@ export class User {
   @Field((_type) => Address)
   address: Address;
 }
+
+@ObjectType()
+export class RoomUser extends User {
+  @Field()
+  turnIndex: number;
+
+  @Field((_type) => [String])
+  userStolenFrom: string[];
+
+  @Field()
+  giftId: string;
+
+  @Field()
+  roomCode: string;
+
+  @Field()
+  isHost: boolean;
+}

@@ -20,6 +20,12 @@ export class Room {
   @Field()
   totalParticipants: number;
 
+  @Field()
+  lastRobbedUser: string;
+
+  @Field()
+  stealsInRound: number;
+
   // Should not be queryable
   tokenOrders: string[];
 }

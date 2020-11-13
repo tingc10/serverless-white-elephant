@@ -106,13 +106,78 @@ export class GiftResolver {
       .update({
         TableName: process.env.DYNAMODB_TABLE,
         Key: getRoomKeys(roomCode),
-        UpdateExpression: 'set turnIndex + :i',
+        UpdateExpression: 'set turnIndex + :i, stealsInRound = :resetSteals',
         ConditionExpression: 'turnIndex < totalParticipants',
         ExpressionAttributeValues: {
           ':i': '1',
+          ':resetSteals': 0,
         },
       })
       .promise();
     return result.Attributes;
+  }
+
+  @Mutation((_returns) => Gift)
+  async stealGiftFromUser(
+    @Arg('giftId') giftId: string,
+    @Arg('userId') userId: string,
+    @Arg('roomCode') roomCode: string,
+    @Arg('turnIndex') turnIndex: number,
+  ): Promise<Partial<Gift>> {
+    const room = await this.dynamoDb
+      .get({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomKeys(roomCode),
+      })
+      .promise();
+    if (room.Item.stealsInRound === 3) {
+      throw new Error('Too many steals this turn, pick a new gift from pile');
+    }
+    const result = await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomGiftsKeys(roomCode, giftId),
+        UpdateExpression:
+          'set recipientId = :recipientId, lastRoundStolen = :lastRoundStolen',
+        ConditionExpression:
+          // Can only steal if someone is holding on the gift and
+          // it has never been stolen or the person stealing was not the last to be stolen
+          'attribute_exists(recipientId) and lastRoundStolen <> :lastRoundStolen',
+        ExpressionAttributeValues: {
+          ':recipientId': userId,
+          ':lastRoundStolen': turnIndex,
+        },
+        ReturnValues: 'UPDATED_OLD',
+      })
+      .promise();
+    const previousRecipient = result.Attributes.recipientId;
+    await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomUsersKeys(roomCode, previousRecipient),
+        UpdateExpression:
+          'set userStolenFrom = list_append(if_not_exists(userStolenForm, :emptyList), :userId)',
+        ExpressionAttributeValues: {
+          ':emptyList': [],
+          ':userId': userId,
+        },
+      })
+      .promise();
+    await this.dynamoDb
+      .update({
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: getRoomKeys(roomCode),
+        UpdateExpression:
+          'set lastRobbedUser = :lastRobbedUser, stealsInRound = if_not_exists(stealsInRound, :initStealCount) + :i',
+        ExpressionAttributeValues: {
+          ':lastRobbedUser': previousRecipient,
+          ':initStealCount': 0,
+          ':i': 1,
+        },
+      })
+      .promise();
+    return {
+      giftId,
+    };
   }
 }

@@ -17,8 +17,8 @@ export class Gift {
   @Field({ nullable: true })
   description: string;
 
-  @Field((_type) => [String], { nullable: 'items' })
-  stolenFrom: string[];
+  @Field()
+  lastRoundStolen: number;
 
   @Field()
   ownerId: string;
