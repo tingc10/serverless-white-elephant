@@ -17,6 +17,9 @@ export class Room {
   @Field({ nullable: true })
   turnIndex: number;
 
+  @Field()
+  totalParticipants: number;
+
   // Should not be queryable
   tokenOrders: string[];
 }
