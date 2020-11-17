@@ -25,7 +25,12 @@ module.exports = {
     filename: '[name].js',
   },
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals({
+      // https://github.com/serverless-heaven/serverless-webpack/issues/494#issuecomment-485684097
+      additionalModuleDirs: ['../node_modules'],
+    }),
+  ],
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`

@@ -5739,11 +5739,9 @@ eslint-plugin-jsx-a11y@^6.3.1:
     language-tags "^1.0.5"
 
 eslint-plugin-module-resolver@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-module-resolver/-/eslint-plugin-module-resolver-1.0.0.tgz#6640787bf95e6cef0f49ff61fcc7de9709224310"
-  integrity sha512-Z+FaIkmQ9Bqi0KLic7LISlg+L8eNNK1l57e9XXbKvsUmtQqvtTx2UbEpXwAGdahAI5e2o///gJXNfXgHzX9YpQ==
-  dependencies:
-    find-babel-config "^1.2.0"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-module-resolver/-/eslint-plugin-module-resolver-1.1.0.tgz#ed7c1936b4138e6ad1b812e3961744b969c8adef"
+  integrity sha512-NkoFHtUShDsFnOY+UZzxWFh5dVAVQdpiNnNuLl0xSTuUHbkQW0ygXzNDM+uM+viI6D29/0FP8XBwC80ZChadcg==
 
 eslint-plugin-prettier@^3.1.4:
   version "3.1.4"
@@ -6245,14 +6243,6 @@ finalhandler@~1.1.2:
     parseurl "~1.3.3"
     statuses "~1.5.0"
     unpipe "~1.0.0"
-
-find-babel-config@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/find-babel-config/-/find-babel-config-1.2.0.tgz#a9b7b317eb5b9860cda9d54740a8c8337a2283a2"
-  integrity sha512-jB2CHJeqy6a820ssiqwrKMeyC6nNdmrcgkKWJWmpoxpE8RKciYJXCcXRq1h2AzCo5I5BJeN2tkGEO3hLTuePRA==
-  dependencies:
-    json5 "^0.5.1"
-    path-exists "^3.0.0"
 
 find-cache-dir@^2.1.0:
   version "2.1.0"
@@ -8282,11 +8272,6 @@ json3@^3.3.2:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.3.tgz#7fc10e375fc5ae42c4705a5cc0aa6f62be305b81"
   integrity sha512-c7/8mbUsKigAbLkD5B010BK4D9LZm7A1pNItkEwiUZRpIN66exu/e7YQWysGun+TRKaJp8MhemM+VkfWv42aCA==
-
-json5@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
-  integrity sha1-Hq3nrMASA0rYTiOWdn6tn6VJWCE=
 
 json5@^1.0.1:
   version "1.0.1"
