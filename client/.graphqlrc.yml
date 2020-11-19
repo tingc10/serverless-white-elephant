@@ -1,15 +1,13 @@
 schema: http://localhost:3000/dev/graphql
-# Can add static query operations (from what I can tell) to be generated into functions
-# documents: "./src/queries/**/*.graphql"
+documents: "./src/queries/**/*.graphql"
 extensions:
   codegen:
     generates:
-      ./src/generated/types.ts:
+      ./src/generated/index.ts:
         plugins:
           - typescript
+          - typescript-operations
           - typescript-react-apollo
-        config:
-          withHooks: true
       ./src/generated/schema.graphql:
         plugins:
           - schema-ast

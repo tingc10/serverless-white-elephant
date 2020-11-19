@@ -1,0 +1,13 @@
+query GetUser($userId: String!) {
+  getUser(id: $userId) {
+    userId
+    nickname
+    address {
+      addressLine1
+      addressLine2
+      city
+      state
+      zipCode
+    }
+  }
+}
