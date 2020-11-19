@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server-lambda';
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
+import { buildSchema, emitSchemaDefinitionFile } from 'type-graphql';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -18,8 +18,8 @@ async function bootstrap(
   const schema = await buildSchema({
     resolvers: [UserResolver, RoomResolver, GiftResolver],
     // orphanedTypes: [User],
+    emitSchemaFile: true,
   });
-
   const server = new ApolloServer({
     schema,
     context: ({ event, context }) => ({

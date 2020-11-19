@@ -1,0 +1,73 @@
+type Query {
+  getUser(id: String!): User!
+  getUserRooms(userId: String!): [Room!]!
+  getRoomMeta(roomCode: String!): Room!
+  getRoomGifts(roomCode: String!): [Gift!]!
+  getRoomGift(giftId: String!, roomCode: String!): Gift!
+  getRoomUsers(roomCode: String!): [User!]!
+}
+
+type User {
+  userId: ID!
+  nickname: String!
+  address: Address!
+}
+
+type Address {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  state: String!
+  zipCode: Float!
+}
+
+type Room {
+  roomCode: ID!
+  roomName: String!
+  gameOptions: [String]!
+  unselectedTokens: [String!]
+  turnIndex: Float
+  totalParticipants: Float!
+  lastRobbedUser: String!
+  stealsInRound: Float!
+}
+
+type Gift {
+  giftId: ID!
+  productUrl: String
+  name: String!
+  imageUrl: String
+  description: String
+  lastRoundStolen: Float!
+  ownerId: String!
+  roomCode: String!
+  recipientId: String
+  isRevealed: Boolean!
+}
+
+type Mutation {
+  updateNickname(nickname: String, id: String!): User!
+  updateAddress(address: AddressInput!, id: String!): User!
+  addUser(id: String!): String!
+  createRoom(gameOptions: [String!], roomName: String!, hostId: String!): Room!
+  setUserTurnIndex(turnToken: String!, userId: String!, roomCode: String!): Float!
+  startGame(roomCode: String!): Room!
+  addGiftAndUserToRoom(giftInfo: GiftInput!, roomCode: String!, ownerId: String!): Gift!
+  takeGiftFromUnrevealed(roomCode: String!, userId: String!, giftId: String!): Gift!
+  stealGiftFromUser(turnIndex: Float!, roomCode: String!, userId: String!, giftId: String!): Gift!
+}
+
+input AddressInput {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  state: String!
+  zipCode: Float!
+}
+
+input GiftInput {
+  name: String!
+  productUrl: String
+  imageUrl: String
+  description: String
+}
