@@ -1,5 +1,6 @@
 schema: http://localhost:3000/dev/graphql
-# documents: "./src/**/*.graphql"
+# Can add static query operations (from what I can tell) to be generated into functions
+# documents: "./src/queries/**/*.graphql"
 extensions:
   codegen:
     generates:
