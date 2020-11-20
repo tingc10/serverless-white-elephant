@@ -21,6 +21,7 @@ Serverless backend to power white elephant gift exchange
 - [x] Setup serverless with webpack
 - [x] Setup type-graphql
 - [x] Figure out DynamoDB structure
+- [ ] Try using aws-lamda-graphql
 - [ ] Implement game mechanics
 - [ ] Setup Auth0
 - [ ] Use [ProjectionExpression](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html) to limit the return values from DynamoDB

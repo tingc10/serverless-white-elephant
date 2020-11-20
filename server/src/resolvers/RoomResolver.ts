@@ -13,7 +13,7 @@ const filterGift = (gift: Gift): Partial<Gift> => {
   if (!gift.isRevealed) {
     return {
       giftId: gift.giftId,
-      stolenFrom: gift.stolenFrom,
+      lastRoundStolen: gift.lastRoundStolen,
       roomCode: gift.roomCode,
       recipientId: gift.recipientId,
       isRevealed: gift.isRevealed,
