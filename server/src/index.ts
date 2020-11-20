@@ -47,11 +47,9 @@ const server = new Server({
   schema,
   // accepts all the apollo-server-lambda options and adds few extra options
   // provided by this package
-  context: ({ event, context }) => ({
+  context: ({ event }) => ({
     headers: event.headers,
-    functionName: context.functionName,
     event,
-    context,
     pubSub,
   }),
   connectionManager,

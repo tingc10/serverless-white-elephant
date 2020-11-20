@@ -11,12 +11,10 @@
     "format": "yarn lint --fix",
     "build": "tsc --noEmit",
     "start": "sls offline start",
+    "start:debug": "yarn start --printOutput",
     "deploy": "sls deploy",
     "deploy:client": "sls client deploy --no-confirm",
     "dynamodb:start": "sls dynamodb start",
-    "dynamodb:build": "tsc --outDir ./tests/build ./tests/*",
-    "dynamodb:seed": "yarn dynamodb:build; node ./tests/build/seed-local-dynamodb.js",
-    "dynamodb:migrate": "yarn dynamodb:build; node ./tests/build/migrate-user-rooms.js",
     "dynamodb:install": "sls dynamodb install"
   },
   "dependencies": {
