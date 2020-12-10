@@ -32,10 +32,10 @@ custom:
           - dynamoDBStreamHandler
 
 plugins:
+  - serverless-finch
   - serverless-webpack
   - serverless-prune-plugin
   - serverless-offline
-  - serverless-finch
   - serverless-dynamodb-local
   - serverless-plugin-offline-dynamodb-stream
 

@@ -58,6 +58,11 @@ const server = new Server({
   ...serverPlaygroundOptions,
 });
 
-export const handleHttp = server.createHttpHandler();
+export const handleHttp = server.createHttpHandler({
+  cors: {
+    origin: '*',
+    credentials: true,
+  },
+});
 export const handleWebSocket = server.createWebSocketHandler();
 export const handleDynamoDBStream = server.createEventHandler();

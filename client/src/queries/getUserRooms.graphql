@@ -1,0 +1,5 @@
+query GetUserRooms($userId: String!) {
+  getUserRooms(userId: $userId) {
+    roomCode
+  }
+}

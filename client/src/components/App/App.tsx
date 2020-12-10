@@ -1,29 +1,76 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useRef } from 'react';
 import './App.css';
-import { ApolloProvider } from '@apollo/client';
-import { client } from '../../apollo-client'
+import { useCreateUserMutation, useCreateRoomMutation, useGetUserRoomsLazyQuery } from '../../generated';
 
 function App() {
+  const userIdRef = useRef<HTMLInputElement>(null)
+  const roomNameRef = useRef<HTMLInputElement>(null)
+  const searchRoomsRef = useRef<HTMLInputElement>(null)
+  const [createUserMutation, { data: userData }] = useCreateUserMutation()
+  const [createRoomMutation, { data: createRoomData }] = useCreateRoomMutation()
+  const [getUserRooms, { data: userRoomsData }] = useGetUserRoomsLazyQuery()
+
+  const handleCreateUser = (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      createUserMutation({
+        variables: {
+          userId: userIdRef?.current?.value || '',
+        }
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const handleCreateRoom = (event: React.FormEvent) => {
+    event.preventDefault()
+    createRoomMutation({
+      variables: {
+        roomName: roomNameRef?.current?.value || '',
+        hostId: userIdRef?.current?.value || '',
+      }
+    })
+  }
+  const handleGetUserRooms = (event: React.FormEvent) => {
+    event.preventDefault()
+    getUserRooms({
+      variables: {
+        userId: searchRoomsRef?.current?.value || '',
+      }
+    })
+  }
+  useEffect(() => {
+
+  },)
   return (
-    <ApolloProvider client={client}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+    <div className="App">
+      <form onSubmit={handleCreateUser}>
+        <label>
+          UserId: <input type="text" ref={userIdRef}/>
+        </label>
+      </form>
+      <div>
+        {userData ? `New User Id: ${userData?.addUser}` : ''}
       </div>
-    </ApolloProvider>
+      <form onSubmit={handleCreateRoom}>
+        <label>
+          Room Name: <input type="text" ref={roomNameRef}/>
+        </label>
+      </form>
+      <div>
+        {createRoomData ? `New Room: ${createRoomData?.createRoom.roomName}` : ''}
+      </div>
+      <form onSubmit={handleGetUserRooms}>
+        <label>
+          Get rooms for user: <input type="text" ref={searchRoomsRef}/>
+        </label>
+      </form>
+      <div>
+        {userRoomsData ? `Rooms: ${userRoomsData?.getUserRooms.map(room => room.roomCode).join(', ')}` : ''}
+      </div>
+      
+    </div>
   );
 }
 
